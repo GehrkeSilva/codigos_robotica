@@ -104,7 +104,13 @@ class SensorCor{
       return green;
       
     }
-
+      int lerVerdeDireito(){
+      digitalWrite(this->pinSensorDir1,HIGH);
+      digitalWrite(this->pinSensorDir2,HIGH);
+      int direito = pulseIn(this->outSensorDir, digitalRead(this->outSensorDir) == HIGH ? LOW : HIGH);
+      return direito;
+      
+    }
 
 };
 
@@ -124,14 +130,25 @@ void loop() {
   //motor.andar(100);
   //delay(1000);
   //motor.virarEsq(100,1000);
-  Serial.println(sensor.lerVerdeEsquerdo());  
-  if(sensor.lerVerdeEsquerdo()<30){
-    motor.andar(80,0);
-  }
-  else{
-    motor.parar();
-  }
+  Serial.print("Sensor Esq: ");  
+  Serial.print(sensor.lerVerdeEsquerdo());
+  Serial.print(" - Sensor Dir: ");
+  Serial.println(sensor.lerVerdeDireito());  
+  if(sensor.lerVerdeEsquerdo()<30 && sensor.lerVerdeDireito()<25){
+  motor.andar(100,0);
+  if(sensor.lerVerdeDireito()>24){
+  motor.virarDir(80,0);
 }
+}
+if(sensor.lerVerdeEsquerdo()>29){
+ motor.virarEsq(80,0);
+}
+}
+  
+  
+  
+  
+
 void loop2() {
   digitalWrite(13,HIGH);
   delay(1000);
